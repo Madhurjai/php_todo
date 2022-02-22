@@ -49,11 +49,11 @@ echo $editlistitem;
             <h3>Add Item</h3>
             <form action="" method="POST">
             <p>
-                <input id="new-task" type="text" name = 'list' <?php if (sizeof($editlistitem) >0) : ?> value = "<?php echo $editlistitem['text'] ?>" <?php endif ;?> >
+                <input id="new_task" type="text" name = 'list' <?php if (sizeof($editlistitem) >0) : ?> value = "<?php echo $editlistitem['text'] ?>" <?php endif ;?> >
                     <?php if (sizeof($editlistitem)>0) : ?>
                 <input type="submit" value="update" name="action">
                 <?php  else:?>
-                    <input type="submit" value="add" name="action">
+                    <input type="submit" value="add" name="action" id = "addbtn">
                     <?php endif ; ?>
             </p>
     
@@ -63,9 +63,12 @@ echo $editlistitem;
     
             <?php echo display(); ?>
             <h3>Completed</h3>
-            <?php  echo displaycomplete(); ?>
+            <?php  echo displaycomplete();
+           ?>
             </form>
         </div>
         
     </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="php.js"></script>
 </html>

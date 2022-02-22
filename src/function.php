@@ -2,7 +2,7 @@
 session_start();
 function addtask($text)
 {
-    $finallists = isset($_SESSION['lists']) ? $_SESSION['lists']:array();
+    $finallists = isset($_SESSION['finallists']) ? $_SESSION['finallists']:array();
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     $text = array('id' => rand(10, 1000000), 'text' => $text);
     array_push($lists, $text);
@@ -19,7 +19,7 @@ function display()
             <input type="checkbox" name = "action" value = "checkbox" onchange = "this.form.submit()">
             <label>' . $val['text'] . '</label>
             <button class="edit" name = "action" id = ' .$val['id']. ' value = "edit">Edit</button>
-            <button class="delete"  id = ' . $val['id'] . ' name = "action" value = "delete">Delete</button></li></ul>';
+            <button class="delete"  id = ' . $val['id'] . ' name = "action" value = "delete">Delete</button></li>';
         }
     }
     $html .= " </ul>";
@@ -35,7 +35,7 @@ function displaycomplete()
             <input type="checkbox" name = "action" value = "checkbox1" onchange = "this.form.submit()">
             <label>' . $val['text'] . '</label>
             <button class="edit" name = "action" value = "edit">Edit</button>
-            <button class="delete"   name = "action" value = "delete">Delete</button></li></ul>';
+            <button class="delete"   name = "action" value = "delete">Delete</button></li>';
         }
     }
     $html .= " </ul>";
@@ -99,13 +99,14 @@ function deletefromcomplete($id)
 }
 function deletepermanent(){
     $listid = $_POST['listid'];
-    $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
+    $lists = isset($_SESSION['lists']) ?$_SESSION['lists']:array();
     if (sizeof($lists)) {
         foreach ($lists as $key => $val){
             if ($val['id'] == $listid) {
                 array_splice($lists,$key,1);
                 $_SESSION['lists'] = $lists;
-                return $lists ;
+                echo sizeof($lists);
+                // return $lists ;
             }
         };
     };
