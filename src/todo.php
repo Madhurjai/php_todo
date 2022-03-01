@@ -31,9 +31,9 @@ if(isset($_REQUEST['action'])) {
             break ;
         case 'checkbox':
            deletefromtodo($listid);
+
            break ;
         case 'checkbox1':
-            $uncheck = '';
             deletefromcomplete($listid1);
            break ;
 

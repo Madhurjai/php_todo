@@ -75,7 +75,6 @@ function deletefromtodo($id)
 }
 function deletefromcomplete($id)
 { 
-    //   $uncheck = 'checked';
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     $finallists = isset($_SESSION['finallists']) ? $_SESSION['finallists'] : array();
     $un_checkval = $finallists[$id];
