@@ -15,27 +15,27 @@ function display()
     $html = " <ul id=incomplete-tasks>";
     if (sizeof($lists)) {
         foreach ($lists as $key => $val) {
-            $html .= '<li><input type="hidden" name="listid" value = "'.$val['id'].'" >
+            $html .= '<li><input type="hidden" name="listid" value = "'.$key.'" >
             <input type="checkbox" name = "action" value = "checkbox" onchange = "this.form.submit()">
             <label>' . $val['text'] . '</label>
-            <button class="edit" name = "action" id = ' .$val['id']. ' value = "edit">Edit</button>
-            <button class="delete"  id = ' . $val['id'] . ' name = "action" value = "delete">Delete</button></li>';
+            <button class="edit" name = "action" id = ' .$key. ' value = "edit">Edit</button>
+            <button class="delete"  id = ' . $key. ' name = "action" value = "delete">Delete</button></li>';
         }
     }
     $html .= " </ul>";
     return $html;
 }
-function displaycomplete()
-{
+function displaycomplete($uncheck){
+    
     $finallists = isset($_SESSION['finallists']) ? $_SESSION['finallists'] : array();
     $html = " <ul id=completed-tasks>";
     if (sizeof($finallists)) {
         foreach ($finallists as $key => $val) {
-            $html .= '<li><input type="hidden" name="listid" value = "'.$val['id'].'" >
-            <input type="checkbox" name = "action" value = "checkbox1" onchange = "this.form.submit()">
-            <label>' . $val['text'] . '</label>
-            <button class="edit" name = "action" value = "edit">Edit</button>
-            <button class="delete"   name = "action" value = "delete">Delete</button></li>';
+            $html .= '<li><input type="hidden" name="listid1" value = "'.$key.'" >
+            <input type="checkbox" name = "action" value = "checkbox1" '.$uncheck.' onchange = "this.form.submit()" >
+            <label>' . $val['text'] . '</label></li>';
+            // <button class="edit" name = "action" value = "edit">Edit</button>
+            // <button class="delete"   name = "action" value = "delete">Delete</button>;
         }
     }
     $html .= " </ul>";
@@ -46,68 +46,53 @@ function edititem($id)
 {
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     if (sizeof($lists)) {
-        foreach ($lists as $key => $val) {
-            if ($val['id'] == $id) {
-                return $val;
-            };
-        };
+      $val = $lists[$id];
+      $_SESSION['lists'] = $lists ;
+      return $val ;
     };
 }
 function updatetask($listitem)
 {
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     if (sizeof($lists)) {
-        foreach ($lists as $key => $val) {
-            if ($val['id'] == $listitem['id']) {
-                $lists[$key]['text'] = $listitem['text'];
+       
+                $lists[$listitem['id']]['text'] = $listitem['text'];
                 $_SESSION['lists'] = $lists;
                 return $lists;
-            };
-        };
+            
+        
     };
 }
 function deletefromtodo($id)
 {   
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     $finallists = isset($_SESSION['finallists']) ? $_SESSION['finallists'] : array();
-    if (sizeof($lists)) {
-        foreach ($lists as $key => $val){
-            if ($val['id'] == $id) {
-                array_push($finallists,$val);
-                array_splice($lists, $key, 1);
-                $_SESSION['lists'] = $lists;
-                $_SESSION['finallists'] = $finallists;
-                // echo $finallists ;
-            };
-        };
-    };
+    $checkval = $lists[(int)$id];
+    array_push($finallists,$checkval);
+    array_splice($lists, (int)$id, 1);
+    $_SESSION['lists'] = $lists;
+    $_SESSION['finallists'] = $finallists;
 }
 function deletefromcomplete($id)
-{
+{ 
+    //   $uncheck = 'checked';
     $lists = isset($_SESSION['lists']) ? $_SESSION['lists'] : array();
     $finallists = isset($_SESSION['finallists']) ? $_SESSION['finallists'] : array();
-    if (sizeof($finallists)) {
-        foreach ($finallists as $key => $val){
-            if ($val['id'] == $id) {
-                array_push($lists,$val);
-                array_splice($finallists, $key, 1);
-                $_SESSION['lists'] = $lists;
-                $_SESSION['finallists'] = $finallists;
-            };
-        };
-    };
+    $un_checkval = $finallists[$id];
+    array_push($lists,$un_checkval);
+    array_splice($finallists, (int)$id, 1);
+    $_SESSION['lists'] = $lists;
+    $_SESSION['finallists'] = $finallists;
 }
-function deletepermanent(){
+function deletepermanent($id){
     $listid = $_POST['listid'];
     $lists = isset($_SESSION['lists']) ?$_SESSION['lists']:array();
     if (sizeof($lists)) {
-        foreach ($lists as $key => $val){
-            if ($val['id'] == $listid) {
-                array_splice($lists,$key,1);
+       
+                array_splice($lists,(int)$id,1);
                 $_SESSION['lists'] = $lists;
-                echo sizeof($lists);
+                // echo sizeof($lists);
                 // return $lists ;
-            }
-        };
+    
     };
 }

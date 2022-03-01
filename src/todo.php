@@ -8,9 +8,12 @@ $editlistitem = array();
 if(isset($_REQUEST['action'])) {
     $action = $_REQUEST['action'];
     $text = $_REQUEST['list'];
-    $id = $_REQUEST['id'];
+    // $id = $_REQUEST['id'];
     $global = array();
-    $listid = $_REQUEST['listid'];
+    $listid = $_POST['listid'];
+    $listid1 = $_POST['listid1'];
+    $uncheck = 'checked';
+
     $updateitem = array('id'=> $listid, 'text' => $text);
     switch($action) {
         case 'add':
@@ -18,24 +21,25 @@ if(isset($_REQUEST['action'])) {
             break;
         case 'edit':
             $editlistitem = edititem($listid);
-            // echo  $editlistitem ;
+            // print_r($editlistitem) ;
             break;
         case 'update':
             updatetask($updateitem);
             break ;
         case 'delete':
-            deletepermanent();
+            deletepermanent($listid);
             break ;
         case 'checkbox':
            deletefromtodo($listid);
            break ;
         case 'checkbox1':
-            deletefromcomplete($listid);
+            $uncheck = '';
+            deletefromcomplete($listid1);
            break ;
 
     }
+    // echo $editlistitem;
 }
-echo $editlistitem;
 
 ?>
 <html>
@@ -49,8 +53,8 @@ echo $editlistitem;
             <h3>Add Item</h3>
             <form action="" method="POST">
             <p>
-                <input id="new_task" type="text" name = 'list' <?php if (sizeof($editlistitem) >0) : ?> value = "<?php echo $editlistitem['text'] ?>" <?php endif ;?> >
-                    <?php if (sizeof($editlistitem)>0) : ?>
+                <input id="new_task" type="text" name = 'list' <?php if (sizeof($editlistitem)) : ?> value = "<?php echo $editlistitem['text'] ?>" <?php endif ;?> >
+                    <?php if (sizeof($editlistitem)) : ?>
                 <input type="submit" value="update" name="action">
                 <?php  else:?>
                     <input type="submit" value="add" name="action" id = "addbtn">
@@ -61,9 +65,9 @@ echo $editlistitem;
             
            
     
-            <?php echo display(); ?>
+            <?php  echo display(); ?>
             <h3>Completed</h3>
-            <?php  echo displaycomplete();
+            <?php  echo displaycomplete($uncheck);
            ?>
             </form>
         </div>
